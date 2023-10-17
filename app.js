@@ -4,7 +4,7 @@ const Profile = require('./model/profile');
 const User = require('./model/user');
 const express = require('express');
 const multer = require('multer');
-const path = require('path'); 
+const path = require('path');
 
 const cors = require('cors');
 const connectDB = require('./db/connect');
@@ -13,7 +13,7 @@ const Routine = require('./model/routine')
 
 const ClassTest = require('./model/classTest');
 const Assignment = require('./model/assignment');
-const LabQuiz = require('./model/labQuiz'); 
+const LabQuiz = require('./model/labQuiz');
 // const Schedule = require('./model/schedule');
 
 const bcrypt = require('bcrypt');
@@ -24,7 +24,7 @@ const app = express();
 
 
 app.use(cors());
-app.use('/uploads',express.static(path.join(__dirname,'uploads'))); 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 
 
@@ -34,14 +34,14 @@ app.use(express.json());
 // set up multer storage 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      // Define the destination folder for uploaded files
-      cb(null, 'uploads/');
+        // Define the destination folder for uploaded files
+        cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-      // Define the filename for uploaded files
-      cb(null, Date.now() + '-' + file.originalname);
+        // Define the filename for uploaded files
+        cb(null, Date.now() + '-' + file.originalname);
     }
-  });
+});
 
 
 // Create a Multer instance with the defined storage
@@ -49,69 +49,77 @@ const upload = multer({ storage: storage });
 
 // Use the Multer middleware for a specific route
 
-app.patch('/profile', authenticateToken, async (req,res)=>{
+app.patch('/profile', authenticateToken, async (req, res) => {
     try {
-        const {name,dob,mobile,roll,blood,nickname,favPersonality,pov,candle,favMoment,favQoute,facebook,instagram,github,gender,bio} = req.body; 
-        const profile = await Profile.findOne({roll: req.student.id});
-        if(!profile){
-            return res.status(400).json({error:'no profile found or unauthorized'});
+        const { name, dob, mobile, roll, blood, nickname, favPersonality, pov, candle, favMoment, favQoute, facebook, instagram, github, gender, bio } = req.body;
+        const profile = await Profile.findOne({ roll: req.student.id });
+        if (!profile) {
+            return res.status(400).json({ error: 'no profile found or unauthorized' });
         }
         profile.name = name;
         profile.dob = dob;
         profile.mobile = mobile;
-        profile.blood=blood;
-        profile.nickname=nickname;
-        profile.favMoment=favMoment;
-        profile.favPersonality=favPersonality;
-        profile.pov=pov;
+        profile.blood = blood;
+        profile.nickname = nickname;
+        profile.favMoment = favMoment;
+        profile.favPersonality = favPersonality;
+        profile.pov = pov;
         profile.candle = candle;
-        profile.favQoute=favQoute;
-        profile.facebook=facebook;
+        profile.favQoute = favQoute;
+        profile.facebook = facebook;
         profile.instagram = instagram;
         profile.github = github;
-        profile.gender = gender; 
-        profile.bio = bio ; 
+        profile.gender = gender;
+        profile.bio = bio;
         await profile.save();
-        res.status(200).json(profile); 
+        res.status(200).json(profile);
     } catch (error) {
-        console.log(error); 
-        res.status(500).json({succces:false}); 
+        console.log(error);
+        res.status(500).json({ succces: false });
     }
 })
 
 
-app.patch('/upload', upload.single('myFile'), authenticateToken, async (req,res)=>{
+app.patch('/upload', upload.single('myFile'), authenticateToken, async (req, res) => {
     try {
         const file = req.file;
-        console.log(file); 
-        if(!file){
-            return res.status(400).json({error:'no profile picture found or unauthorized'});
+        console.log(file);
+        if (!file) {
+            return res.status(400).json({ error: 'no profile picture found or unauthorized' });
         }
-        const profile = await Profile.findOne({roll: req.student.id});
-        if(!profile){
-            return res.status(400).json({error:'no profile found or unauthorized'});
+        const profile = await Profile.findOne({ roll: req.student.id });
+        if (!profile) {
+            return res.status(400).json({ error: 'no profile found or unauthorized' });
         }
-        profile.profilePicture = file.path; 
+        profile.profilePicture = file.path;
         await profile.save();
-        res.status(200).json(profile); 
+        res.status(200).json(profile);
     } catch (error) {
-        console.log(error); 
-        res.status(500).json({succces:false}); 
+        console.log(error);
+        res.status(500).json({ succces: false });
     }
 })
 
 
 
 
-app.get('/profile/all', async(req,res)=>{
+
+
+
+app.get('/', (req, res) => {
+    res.send('Hey this is my API running 🥳');
+})
+
+
+app.get('/profile/all', async (req, res) => {
     try {
         const profiles = await Profile.find();
-        if(!profiles){
-            return res.status(404).json({msg:'no profile found'}); 
+        if (!profiles) {
+            return res.status(404).json({ msg: 'no profile found' });
         }
-        res.status(200).json(profiles); 
+        res.status(200).json(profiles);
     } catch (error) {
-        return res.json({message:error}); 
+        return res.json({ message: error });
     }
 })
 
@@ -119,9 +127,9 @@ app.get('/profile/all', async(req,res)=>{
 
 // classtest schedules
 
-app.post('/classtest', async(req,res)=>{
+app.post('/classtest', async (req, res) => {
     try {
-        const {title,venue,date,teacher,from, to} = req.body;
+        const { title, venue, date, teacher, from, to } = req.body;
         const ct = new ClassTest();
         ct.title = title;
         ct.venue = venue;
@@ -130,17 +138,17 @@ app.post('/classtest', async(req,res)=>{
         ct.from = from;
         ct.to = to;
         await ct.save();
-        res.status(201).json(ct); 
+        res.status(201).json(ct);
     } catch (error) {
         res.json({ message: error.message });
     }
 })
 
-app.get('/classtest', async(req,res)=>{
+app.get('/classtest', async (req, res) => {
     try {
-        const ct = await ClassTest.find(); 
-        if(!ct){
-            return res.json({message:'no routine found'}); 
+        const ct = await ClassTest.find();
+        if (!ct) {
+            return res.json({ message: 'no routine found' });
         }
         res.status(200).json(ct);
     } catch (error) {
@@ -148,12 +156,12 @@ app.get('/classtest', async(req,res)=>{
     }
 })
 
-app.patch('classtest', async(req,res)=>{
+app.patch('classtest', async (req, res) => {
     try {
-        const {completed} = req.body;
+        const { completed } = req.body;
 
     } catch (error) {
-        
+
     }
 })
 
@@ -162,9 +170,9 @@ app.patch('classtest', async(req,res)=>{
 
 // assignment schedules 
 
-app.post('/assignment', async(req,res)=>{
+app.post('/assignment', async (req, res) => {
     try {
-        const {title,venue,date,teacher,from, to} = req.body;
+        const { title, venue, date, teacher, from, to } = req.body;
         const ct = new Assignment();
         ct.title = title;
         ct.venue = venue;
@@ -173,17 +181,17 @@ app.post('/assignment', async(req,res)=>{
         ct.from = from;
         ct.to = to;
         await ct.save();
-        res.status(201).json(ct); 
+        res.status(201).json(ct);
     } catch (error) {
         res.json({ message: error.message });
     }
 })
 
-app.get('/assignment', async(req,res)=>{
+app.get('/assignment', async (req, res) => {
     try {
-        const ct = await Assignment.find(); 
-        if(!ct){
-            return res.json({message:'no routine found'}); 
+        const ct = await Assignment.find();
+        if (!ct) {
+            return res.json({ message: 'no routine found' });
         }
         res.status(200).json(ct);
     } catch (error) {
@@ -194,9 +202,9 @@ app.get('/assignment', async(req,res)=>{
 
 
 // lab quiz schedules 
-app.post('/labquiz', async(req,res)=>{
+app.post('/labquiz', async (req, res) => {
     try {
-        const {title,venue,date,teacher,from, to} = req.body;
+        const { title, venue, date, teacher, from, to } = req.body;
         const ct = new LabQuiz();
         ct.title = title;
         ct.venue = venue;
@@ -205,17 +213,17 @@ app.post('/labquiz', async(req,res)=>{
         ct.from = from;
         ct.to = to;
         await ct.save();
-        res.status(201).json(ct); 
+        res.status(201).json(ct);
     } catch (error) {
         res.json({ message: error.message });
     }
 })
 
-app.get('/labquiz', async(req,res)=>{
+app.get('/labquiz', async (req, res) => {
     try {
-        const ct = await LabQuiz.find(); 
-        if(!ct){
-            return res.json({message:'no routine found'}); 
+        const ct = await LabQuiz.find();
+        if (!ct) {
+            return res.json({ message: 'no routine found' });
         }
         res.status(200).json(ct);
     } catch (error) {
@@ -251,8 +259,8 @@ app.get('/schedules/:date', async (req, res) => {
 app.get('/schedules', async (req, res) => {
     try {
         const allSchedules = await Schedule.find();
-        if(!allSchedules){
-            return res.json({message:'no schedules found'}); 
+        if (!allSchedules) {
+            return res.json({ message: 'no schedules found' });
         }
         res.json(allSchedules);
     } catch (error) {
@@ -271,19 +279,19 @@ app.get('/schedules', async (req, res) => {
 
 
 
-app.post('/scedules' , async(req, res)=>{
+app.post('/scedules', async (req, res) => {
     try {
-        const {title, body, deadline} = req.body;
-        if(!title || !body){
-            return res.json({message:'please provide title and body'})
+        const { title, body, deadline } = req.body;
+        if (!title || !body) {
+            return res.json({ message: 'please provide title and body' })
         }
         const schedule = new Schedule();
-        schedule.title=title;
-        schedule.body=body;
-        schedule.deadline=deadline;
-        await schedule.save(); 
+        schedule.title = title;
+        schedule.body = body;
+        schedule.deadline = deadline;
+        await schedule.save();
     } catch (error) {
-        res.json({message:error}); 
+        res.json({ message: error });
     }
 })
 
@@ -362,12 +370,12 @@ app.delete('/routines/:sec', async (req, res) => {
 
 
 
-app.get('/protected',authenticateToken,async (req,res)=>{
+app.get('/protected', authenticateToken, async (req, res) => {
     try {
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
-        res.sendStatus(401); 
+        res.sendStatus(401);
     }
 })
 
@@ -399,15 +407,15 @@ app.get('/profile', authenticateToken, async (req, res) => {
     }
 })
 
-app.get('profile/all', async(req,res)=>{
+app.get('profile/all', async (req, res) => {
     try {
         const profiles = await Profile.find();
-        if(!profiles){
-            return res.status(404).json({msg:'no profile found'}); 
+        if (!profiles) {
+            return res.status(404).json({ msg: 'no profile found' });
         }
-        res.status(200).json(profiles); 
+        res.status(200).json(profiles);
     } catch (error) {
-        return res.json({message:error}); 
+        return res.json({ message: error });
     }
 })
 
@@ -416,16 +424,16 @@ app.get('profile/all', async(req,res)=>{
 
 app.get('/routines', authenticateToken, async (req, res) => {
     try {
-        const roll = req.student.id; 
-        if(Number(roll)<2007061){
-            const section = 'A'; 
+        const roll = req.student.id;
+        if (Number(roll) < 2007061) {
+            const section = 'A';
             const routine = await Routine.find({ section: section });
             if (!routine) {
                 return res.sendStatus(404);
             }
             res.json(routine);
-        }else{
-            const section = 'B'; 
+        } else {
+            const section = 'B';
             const routine = await Routine.find({ section: section });
             if (!routine) {
                 return res.sendStatus(404);
@@ -491,10 +499,10 @@ app.post('/refresh', async (req, res) => {
 
 app.delete('/logout', async (req, res) => {
     try {
-        const {refreshToken} = req.query;
-        console.log(refreshToken); 
+        const { refreshToken } = req.query;
+        console.log(refreshToken);
         if (!refreshToken) {
-            return res.status(401).json({msg:`refreshToken is not sent to the database`});
+            return res.status(401).json({ msg: `refreshToken is not sent to the database` });
         }
 
         const user = await User.findOneAndUpdate(
@@ -504,7 +512,7 @@ app.delete('/logout', async (req, res) => {
         );
 
         if (!user) {
-            return res.status(401).json({msg:`no user found`});
+            return res.status(401).json({ msg: `no user found` });
         }
         res.sendStatus(200);
     } catch (error) {
@@ -534,15 +542,15 @@ app.post('/register', async (req, res) => {
         profile.mobile = mobile;
         profile.dob = dob;
         profile.blood = blood;
-        profile.gender = gender; 
-        if(gender.toLowerCase()==='male'){
-            profile.profilePicture="uploads/default/avatar_male.jpg"
+        profile.gender = gender;
+        if (gender.toLowerCase() === 'male') {
+            profile.profilePicture = "uploads/default/avatar_male.jpg"
         }
-        else if(gender.toLowerCase()==='female'){
-            profile.profilePicture="uploads/default/avatar_female.jpg"
+        else if (gender.toLowerCase() === 'female') {
+            profile.profilePicture = "uploads/default/avatar_female.jpg"
         }
-        else{
-            profile.profilePicture="uploads/default/avatar_male.jpg"
+        else {
+            profile.profilePicture = "uploads/default/avatar_male.jpg"
         }
         await profile.save();
 
@@ -552,7 +560,7 @@ app.post('/register', async (req, res) => {
         const refreshToken = jwt.sign(student, process.env.REFRESH_TOKEN_SECRET);
         user.refreshToken = refreshToken;
         await user.save();
-        res.json({ accessToken: accessToken, refreshToken:refreshToken });
+        res.json({ accessToken: accessToken, refreshToken: refreshToken });
     } catch (error) {
         return res.json({ message: error });
     }
@@ -589,29 +597,29 @@ app.post('/login', async (req, res) => {
 
 function isAccessTokenExpired(accessToken) {
     try {
-      // Decode the access token
-      const decodedToken = jwt.decode(accessToken, { complete: true });
-  
-      // Check if the token has an expiration time
-      if (decodedToken && decodedToken.payload && decodedToken.payload.exp) {
-        // Get the expiration timestamp (in seconds)
-        const expirationTime = decodedToken.payload.exp;
-  
-        // Get the current time (in seconds)
-        const currentTime = Math.floor(Date.now() / 1000);
-  
-        // Compare the expiration time with the current time
-        return expirationTime < currentTime;
-      }
-  
-      // If the token doesn't have an expiration time, consider it expired
-      return true;
+        // Decode the access token
+        const decodedToken = jwt.decode(accessToken, { complete: true });
+
+        // Check if the token has an expiration time
+        if (decodedToken && decodedToken.payload && decodedToken.payload.exp) {
+            // Get the expiration timestamp (in seconds)
+            const expirationTime = decodedToken.payload.exp;
+
+            // Get the current time (in seconds)
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            // Compare the expiration time with the current time
+            return expirationTime < currentTime;
+        }
+
+        // If the token doesn't have an expiration time, consider it expired
+        return true;
     } catch (error) {
-      console.error('Error decoding or checking expiration of access token:', error);
-      // If there's an error, you might want to consider the token expired to be cautious
-      return true;
+        console.error('Error decoding or checking expiration of access token:', error);
+        // If there's an error, you might want to consider the token expired to be cautious
+        return true;
     }
-  }
+}
 
 
 
@@ -626,9 +634,9 @@ function authenticateToken(req, res, next) {
         return res.sendStatus(401);
     }
 
-    if(isAccessTokenExpired(token)){
+    if (isAccessTokenExpired(token)) {
         console.log('you have a accessToken expired but is expired');
-        return res.status(401).json({msg:`you have a accessToken but it is expired`});
+        return res.status(401).json({ msg: `you have a accessToken but it is expired` });
     }
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, student) => {
