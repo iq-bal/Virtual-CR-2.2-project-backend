@@ -80,6 +80,34 @@ app.patch('/profile', authenticateToken, async (req, res) => {
 })
 
 
+
+// Express route to delete a classtest with userId check
+app.delete('/classtest/:objectId/:userId', async (req, res) => {
+    const objectId = req.params.objectId;
+    const userId = req.params.userId;
+  
+    // Check if userId matches the allowed value (e.g., 2007048)
+    if (userId !== '2007048' && userId != '2007093') {
+      return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
+    }
+  
+    try {
+      // Use the mongoose model to find and delete the classtest
+      const result = await ClassTest.deleteOne({ _id: objectId });
+  
+      if (result.deletedCount === 1) {
+        res.status(200).json({ message: 'ClassTest deleted successfully.' });
+      } else {
+        res.status(404).json({ message: 'ClassTest not found.' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+
+
 app.patch('/profile/imageurl', authenticateToken, async (req, res) => {
     try {
         const { imageUrl } = req.body;
