@@ -80,6 +80,23 @@ app.patch('/profile', authenticateToken, async (req, res) => {
 })
 
 
+app.patch('/profile/imageurl', authenticateToken, async (req, res) => {
+    try {
+        const { imageUrl } = req.body;
+        const profile = await Profile.findOne({ roll: req.student.id });
+        if (!profile) {
+            return res.status(400).json({ error: 'no profile found or unauthorized' });
+        }
+        profile.profilePicture = imageUrl; 
+        await profile.save();
+        res.status(200).json(profile);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ succces: false });
+    }
+})
+
+
 app.patch('/upload', upload.single('myFile'), authenticateToken, async (req, res) => {
     try {
         const file = req.file;
@@ -106,7 +123,11 @@ app.patch('/upload', upload.single('myFile'), authenticateToken, async (req, res
 
 
 
+
+
+
 app.get('/', (req, res) => {
+    console.log("Server is runnning at http:localhost:3000")
     res.send('Hey this is my API running 🥳');
 })
 
@@ -657,5 +678,7 @@ async function start() {
 }
 
 start();
-
-app.listen(3000);
+const port = 3000 || process.env.port
+app.listen(3000,()=>{
+    console.log("Server is running at http://localhost:3000/")
+});
