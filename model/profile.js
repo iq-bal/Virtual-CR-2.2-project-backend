@@ -69,7 +69,7 @@ const profileSchema = new mongoose.Schema({
         default: {} // Default is an empty object
     },
     profilePicture:{
-        default:'uploads/default/avatar_male.jpg',
+        default:'https://res.cloudinary.com/dabzeeh4f/image/upload/v1697584315/eq2hr4y2ftatoiioufth.jpg',
         type: String
     }
 })

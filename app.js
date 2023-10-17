@@ -566,13 +566,13 @@ app.post('/register', async (req, res) => {
         profile.blood = blood;
         profile.gender = gender;
         if (gender.toLowerCase() === 'male') {
-            profile.profilePicture = "uploads/default/avatar_male.jpg"
+            profile.profilePicture = "https://res.cloudinary.com/dabzeeh4f/image/upload/v1697584315/eq2hr4y2ftatoiioufth.jpg"
         }
         else if (gender.toLowerCase() === 'female') {
-            profile.profilePicture = "uploads/default/avatar_female.jpg"
+            profile.profilePicture = "https://res.cloudinary.com/dabzeeh4f/image/upload/v1697584441/bdb4w00gkyvkqkq90azd.jpg"
         }
         else {
-            profile.profilePicture = "uploads/default/avatar_male.jpg"
+            profile.profilePicture = "https://res.cloudinary.com/dabzeeh4f/image/upload/v1697584315/eq2hr4y2ftatoiioufth.jpg"
         }
         await profile.save();
 
