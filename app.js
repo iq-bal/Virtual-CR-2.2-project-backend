@@ -193,6 +193,72 @@ app.post('/classtest/:roll', async (req, res) => {
 });
 
 
+// Express route to create a assignment
+app.post('/assignmet/:roll', async (req, res) => {
+    const { roll } = req.params;
+    console.log(typeof roll); 
+    // Check if roll is equal to 2007052
+    if (roll === '2007093') {
+        const { title, venue, date, teacher, from, to } = req.body;
+        try {
+            // Create a new classtest
+            const newClassTest = new Assignment({
+                title,
+                venue,
+                date,
+                teacher,
+                from,
+                to,
+            });
+
+            // Save the classtest to the database
+            await newClassTest.save();
+            res.status(201).json({ message: 'ClassTest created successfully.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    } else {
+        res.status(403).json({ message: 'Forbidden: Invalid roll number.' });
+    }
+});
+
+
+
+
+
+// Express route to create a labquiz
+app.post('/labquiz/:roll', async (req, res) => {
+    const { roll } = req.params;
+    console.log(typeof roll); 
+    // Check if roll is equal to 2007052
+    if (roll === '2007093') {
+        const { title, venue, date, teacher, from, to } = req.body;
+        try {
+            // Create a new classtest
+            const newClassTest = new LabQuiz({
+                title,
+                venue,
+                date,
+                teacher,
+                from,
+                to,
+            });
+
+            // Save the classtest to the database
+            await newClassTest.save();
+            res.status(201).json({ message: 'ClassTest created successfully.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    } else {
+        res.status(403).json({ message: 'Forbidden: Invalid roll number.' });
+    }
+});
+
+
+
 
 app.patch('/profile/imageurl', authenticateToken, async (req, res) => {
     try {
