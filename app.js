@@ -85,80 +85,112 @@ app.patch('/profile', authenticateToken, async (req, res) => {
 app.delete('/classtest/:objectId/:userId', async (req, res) => {
     const objectId = req.params.objectId;
     const userId = req.params.userId;
-  
+
     // Check if userId matches the allowed value (e.g., 2007048)
     if (userId !== '2007048' && userId != '2007093') {
-      return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
+        return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
     }
-  
+
     try {
-      // Use the mongoose model to find and delete the classtest
-      const result = await ClassTest.deleteOne({ _id: objectId });
-  
-      if (result.deletedCount === 1) {
-        res.status(200).json({ message: 'ClassTest deleted successfully.' });
-      } else {
-        res.status(404).json({ message: 'ClassTest not found.' });
-      }
+        // Use the mongoose model to find and delete the classtest
+        const result = await ClassTest.deleteOne({ _id: objectId });
+
+        if (result.deletedCount === 1) {
+            res.status(200).json({ message: 'ClassTest deleted successfully.' });
+        } else {
+            res.status(404).json({ message: 'ClassTest not found.' });
+        }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-  });
+});
 
 
 
 
 
-  // Express route to delete a classtest with userId check
+// Express route to delete a classtest with userId check
 app.delete('/labquiz/:objectId/:userId', async (req, res) => {
     const objectId = req.params.objectId;
     const userId = req.params.userId;
-  
+
     // Check if userId matches the allowed value (e.g., 2007048)
     if (userId !== '2007048' && userId != '2007093') {
-      return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
+        return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
     }
-  
+
     try {
-      // Use the mongoose model to find and delete the classtest
-      const result = await LabQuiz.deleteOne({ _id: objectId });
-  
-      if (result.deletedCount === 1) {
-        res.status(200).json({ message: 'ClassTest deleted successfully.' });
-      } else {
-        res.status(404).json({ message: 'ClassTest not found.' });
-      }
+        // Use the mongoose model to find and delete the classtest
+        const result = await LabQuiz.deleteOne({ _id: objectId });
+
+        if (result.deletedCount === 1) {
+            res.status(200).json({ message: 'ClassTest deleted successfully.' });
+        } else {
+            res.status(404).json({ message: 'ClassTest not found.' });
+        }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-  });
+});
 
 
-  app.delete('/assignment/:objectId/:userId', async (req, res) => {
+app.delete('/assignment/:objectId/:userId', async (req, res) => {
     const objectId = req.params.objectId;
     const userId = req.params.userId;
-  
+
     // Check if userId matches the allowed value (e.g., 2007048)
     if (userId !== '2007048' && userId != '2007093') {
-      return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
+        return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
     }
-  
+
     try {
-      // Use the mongoose model to find and delete the classtest
-      const result = await Assignment.deleteOne({ _id: objectId });
-  
-      if (result.deletedCount === 1) {
-        res.status(200).json({ message: 'ClassTest deleted successfully.' });
-      } else {
-        res.status(404).json({ message: 'ClassTest not found.' });
-      }
+        // Use the mongoose model to find and delete the classtest
+        const result = await Assignment.deleteOne({ _id: objectId });
+
+        if (result.deletedCount === 1) {
+            res.status(200).json({ message: 'ClassTest deleted successfully.' });
+        } else {
+            res.status(404).json({ message: 'ClassTest not found.' });
+        }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-  });
+});
+
+
+// Express route to create a classtest
+app.post('/classtest/:roll', async (req, res) => {
+    const { roll } = req.params;
+
+    // Check if roll is equal to 2007052
+    if (roll === '2007052') {
+        const { title, venue, date, teacher, from, to } = req.body;
+
+        try {
+            // Create a new classtest
+            const newClassTest = new ClassTest({
+                title,
+                venue,
+                date,
+                teacher,
+                from,
+                to,
+            });
+
+            // Save the classtest to the database
+            await newClassTest.save();
+            res.status(201).json({ message: 'ClassTest created successfully.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    } else {
+        res.status(403).json({ message: 'Forbidden: Invalid roll number.' });
+    }
+});
 
 
 
@@ -169,7 +201,7 @@ app.patch('/profile/imageurl', authenticateToken, async (req, res) => {
         if (!profile) {
             return res.status(400).json({ error: 'no profile found or unauthorized' });
         }
-        profile.profilePicture = imageUrl; 
+        profile.profilePicture = imageUrl;
         await profile.save();
         res.status(200).json(profile);
     } catch (error) {
@@ -762,6 +794,6 @@ async function start() {
 
 start();
 const port = 3000 || process.env.port
-app.listen(3000,()=>{
+app.listen(3000, () => {
     console.log("Server is running at http://localhost:3000/")
 });

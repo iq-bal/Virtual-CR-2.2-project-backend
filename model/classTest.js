@@ -28,3 +28,12 @@ const classTestSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('ClassTest',classTestSchema);
+
+
+
+
+
+
+
+
+
