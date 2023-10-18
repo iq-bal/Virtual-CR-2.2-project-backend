@@ -88,7 +88,7 @@ app.delete('/classtest/:objectId/:userId', async (req, res) => {
     const userId = req.params.userId;
 
     // Check if userId matches the allowed value (e.g., 2007048)
-    if (userId !== '2007048' && userId != '2007093') {
+    if (userId !== '2007052' && userId != '2007093') {
         return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
     }
 
@@ -117,7 +117,7 @@ app.delete('/labquiz/:objectId/:userId', async (req, res) => {
     const userId = req.params.userId;
 
     // Check if userId matches the allowed value (e.g., 2007048)
-    if (userId !== '2007048' && userId != '2007093') {
+    if (userId !== '2007052' && userId != '2007093') {
         return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
     }
 
@@ -142,7 +142,7 @@ app.delete('/assignment/:objectId/:userId', async (req, res) => {
     const userId = req.params.userId;
 
     // Check if userId matches the allowed value (e.g., 2007048)
-    if (userId !== '2007048' && userId != '2007093') {
+    if (userId !== '2007052' && userId != '2007093') {
         return res.status(403).json({ message: 'Unauthorized: Invalid userId.' });
     }
 
@@ -166,7 +166,7 @@ app.delete('/assignment/:objectId/:userId', async (req, res) => {
 app.post('/classtest/:roll', async (req, res) => {
     const { roll } = req.params;
     // Check if roll is equal to 2007052
-    if (roll === '2007093') {
+    if (roll === '2007093' || roll==='2007052') {
         const { title, venue, date, teacher, from, to } = req.body;
         try {
             // Create a new classtest
@@ -197,7 +197,7 @@ app.post('/assignment/:roll', async (req, res) => {
     const { roll } = req.params;
     console.log(typeof roll); 
     // Check if roll is equal to 2007052
-    if (roll === '2007093') {
+    if (roll === '2007093' || roll==='2007052') {
         const { title, venue, date, teacher, from, to } = req.body;
         try {
             // Create a new classtest
@@ -231,7 +231,7 @@ app.post('/labquiz/:roll', async (req, res) => {
     const { roll } = req.params;
     console.log(typeof roll); 
     // Check if roll is equal to 2007052
-    if (roll === '2007093') {
+    if (roll === '2007093' || roll==='2007052') {
         const { title, venue, date, teacher, from, to } = req.body;
         try {
             // Create a new classtest
