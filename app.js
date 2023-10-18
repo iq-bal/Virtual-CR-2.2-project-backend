@@ -19,6 +19,7 @@ const LabQuiz = require('./model/labQuiz');
 const bcrypt = require('bcrypt');
 const profile = require('./model/profile');
 const labQuiz = require('./model/labQuiz');
+const { type } = require('os');
 
 const app = express();
 
@@ -164,11 +165,10 @@ app.delete('/assignment/:objectId/:userId', async (req, res) => {
 // Express route to create a classtest
 app.post('/classtest/:roll', async (req, res) => {
     const { roll } = req.params;
-
+    console.log(typeof roll); 
     // Check if roll is equal to 2007052
-    if (roll === '2007052') {
+    if (roll == '2007093') {
         const { title, venue, date, teacher, from, to } = req.body;
-
         try {
             // Create a new classtest
             const newClassTest = new ClassTest({
