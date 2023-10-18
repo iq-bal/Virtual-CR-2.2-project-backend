@@ -165,7 +165,6 @@ app.delete('/assignment/:objectId/:userId', async (req, res) => {
 // Express route to create a classtest
 app.post('/classtest/:roll', async (req, res) => {
     const { roll } = req.params;
-    console.log(typeof roll); 
     // Check if roll is equal to 2007052
     if (roll === '2007093') {
         const { title, venue, date, teacher, from, to } = req.body;
@@ -194,7 +193,7 @@ app.post('/classtest/:roll', async (req, res) => {
 
 
 // Express route to create a assignment
-app.post('/assignmet/:roll', async (req, res) => {
+app.post('/assignment/:roll', async (req, res) => {
     const { roll } = req.params;
     console.log(typeof roll); 
     // Check if roll is equal to 2007052
