@@ -167,7 +167,7 @@ app.post('/classtest/:roll', async (req, res) => {
     const { roll } = req.params;
     console.log(typeof roll); 
     // Check if roll is equal to 2007052
-    if (roll == '2007093') {
+    if (roll === '2007093') {
         const { title, venue, date, teacher, from, to } = req.body;
         try {
             // Create a new classtest
