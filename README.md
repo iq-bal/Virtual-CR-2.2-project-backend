@@ -139,5 +139,3 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 This project is licensed under the MIT License.
 ```
-
-This should now display correctly on GitHub or any markdown viewer. Let me know if you need any more adjustments!
