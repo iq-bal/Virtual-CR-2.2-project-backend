@@ -1,4 +1,4 @@
-Here’s a simple `README.md` for your server project:
+Here is the correctly formatted markdown:
 
 ```markdown
 # Student Management System API
@@ -141,4 +141,4 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 This project is licensed under the MIT License.
 ```
 
-You can customize the content as per your needs. Let me know if you need more specific sections or updates!
+This should now display correctly on GitHub or any markdown viewer. Let me know if you need any more adjustments!
