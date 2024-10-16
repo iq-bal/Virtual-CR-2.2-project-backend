@@ -38,8 +38,8 @@ This is a RESTful API for a Student Management System built with Node.js, Expres
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/student-management-api.git
-   cd student-management-api
+   git clone https://github.com/iq-bal/Virtual-CR-2.2-project-backend.git
+   cd Virtual-CR-2.2-project-backend
    ```
 
 2. Install dependencies:
