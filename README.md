@@ -1,5 +1,3 @@
-Here is the correctly formatted markdown:
-
 # Student Management System API
 
 This is a RESTful API for a Student Management System built with Node.js, Express, MongoDB, and JWT for authentication. The API provides features for handling student profiles, assignments, class tests, lab quizzes, schedules, and user authentication.
@@ -138,4 +136,3 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 ## License
 
 This project is licensed under the MIT License.
-```
