@@ -1,6 +1,5 @@
 Here is the correctly formatted markdown:
 
-```markdown
 # Student Management System API
 
 This is a RESTful API for a Student Management System built with Node.js, Express, MongoDB, and JWT for authentication. The API provides features for handling student profiles, assignments, class tests, lab quizzes, schedules, and user authentication.
